@@ -18,19 +18,22 @@ Add to `status-right` necessary widgets:
 
 * `#{net}` to show network speed statistics;
 * `#{load}` to show the average number of jobs in the run queue over the last 1 minute;
-* `#{mem}` to show memory usage statistics.
+* `#{mem}` to show memory usage statistics;
+* `#{batt}` to show battery capacity and charge status.
 
 ## Example
 
 Status line in the tmux configuration file:
 ```
-set -g status-right '#{load} #{mem} #{net} | %a %Y-%m-%d %H:%M | #H'
+set -g status-right '#{batt} #{load} #{mem} #{net} | %a %Y-%m-%d %H:%M | #H'
 ```
 
 The result:
 ```
-0.16 3.5G/15.6G[0.1G] ▼ 1Kib   ▲ 1Kib    | Tue 2024-04-30 13:15 | ginnungagap
+↓52% 0.16 3.5G/15.6G[0.1G] ▼ 1Kib   ▲ 1Kib    | Tue 2024-04-30 13:15 | ginnungagap
 ```
+* `↓52%` is a battery percentage level.
+The symbol `↓` states about discharging process.
 * `0.16` is a load average for 1 minute.
 It supports color ranges green, yellow and red by internal thresholds.
 * `3.5G/15.6G[0.1G]` is a memory usage statistic.
@@ -53,3 +56,5 @@ The memory widget uses `/proc/meminfo` to get free, total and swap memory statis
 
 The load widget uses `/proc/loadavg` to get the average number of jobs over the last
 1 minute.
+
+The battery status checks for `BAT0/{capacity,status}` files in `sysfs`.

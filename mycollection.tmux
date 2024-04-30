@@ -2,23 +2,24 @@
 
 SCRIPT_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
 
-commands=(\
-    "#($SCRIPT_DIR/scripts/net.sh)" \
-    "#($SCRIPT_DIR/scripts/load.sh)" \
-    "#($SCRIPT_DIR/scripts/mem.sh)" \
+declare -A CMDS=(\
+    ["#{net}"]="#($SCRIPT_DIR/scripts/net.sh)" \
+    ["#{load}"]="#($SCRIPT_DIR/scripts/load.sh)" \
+    ["#{mem}"]="#($SCRIPT_DIR/scripts/mem.sh)" \
+    ["#{batt}"]="#($SCRIPT_DIR/scripts/batt.sh)" \
 )
 
-patterns=(\
-    "\#{net}" \
-    "\#{load}" \
-    "\#{mem}" \
-)
+if ! "$SCRIPT_DIR/scripts/batt.sh" > /dev/null; then
+    # there is no battery
+    CMDS["#{batt}"]=""
+fi
 
 substitute() {
     local statusline="$1"
-    for ((i = 0; i < ${#commands[@]}; i++)); do
-        statusline=${statusline//${patterns[$i]}/${commands[$i]}}
+    for pattern in ${!CMDS[@]}; do
+        statusline=${statusline//$pattern/${CMDS[$pattern]}}
     done
+
     echo "$statusline"
 }
 
