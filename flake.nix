@@ -8,7 +8,7 @@
       tmuxPlugins = prev.tmuxPlugins // {
         mycollection = prev.tmuxPlugins.mkTmuxPlugin {
           pluginName = "mycollection";
-          version = "unstable-2024-05-11";
+          version = "unstable-2024-05-15";
           src = ./.;
         };
       };

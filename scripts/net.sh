@@ -4,7 +4,7 @@ set -e
 which awk > /dev/null
 
 getsum() {
-    awk 'BEGIN{s=0}{s+=$1}END{print s}' "$@"
+    awk 'BEGIN{s=0}{s+=$1}END{printf "%u\n", s}' "$@"
 }
 
 gettmuxval() {
